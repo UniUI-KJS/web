@@ -25,6 +25,7 @@
 			<a class="variant-soft-primary btn" href="{base}/editor/" in:blur|global={{ delay: 900 }}>
 				Launch Editor <span class="inline lg:hidden">&nbsp;(use bigger screen!)</span>
 			</a>
+			<a class="variant-soft-primary btn" href="https://discord.gg/TZXUQVzPJ6" in:blur|global={{ delay: 1000 }}> Discord </a>
 		</div>
 	</div>
 </div>
