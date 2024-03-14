@@ -5,6 +5,8 @@
 	import { toast } from 'svelte-sonner';
 	import { blur, fly } from 'svelte/transition';
 	import Project from './Project.svelte';
+	import { onMount } from 'svelte';
+	import { getModalStore } from '@skeletonlabs/skeleton';
 
 	const newProj = (e: SubmitEvent, projectId: string) => {
 		const target = e.target as HTMLFormElement;
@@ -34,6 +36,29 @@
 
 		setTimeout(() => goto(`${base}/editor/${projectId}/`), 100);
 	};
+
+	const modalStore = getModalStore();
+
+	onMount(() => {
+		const match = window.navigator.userAgent.match(/Firefox\/([0-9]+)\./);
+		const ver = match ? parseInt(match[1]) : 0;
+
+		if (ver != 0) {
+			modalStore.clear();
+			modalStore.trigger({
+				type: 'alert',
+
+				title: 'Unsupported browser',
+				body:
+					"UniUI editor is not supported on Firefox due to SVG rendering issues on Mozilla's" +
+					' end. Prefer using Chrome or another Chromium-based browser.',
+
+				buttonTextCancel: 'aight'
+			});
+
+			return goto(`${base}/`);
+		}
+	});
 </script>
 
 <svelte:head>
