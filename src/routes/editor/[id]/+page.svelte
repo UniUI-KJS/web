@@ -408,7 +408,7 @@
 					try {
 						const ws = new WebSocket('ws://localhost:8625');
 						ws.onerror = () => {
-							toast.error("Run 'npx uniui generate' before trying to export.");
+							toast.error("Run 'npx uniui-kjs@latest generate' before trying to export.");
 							localOpts.noExportButton = false;
 						};
 
