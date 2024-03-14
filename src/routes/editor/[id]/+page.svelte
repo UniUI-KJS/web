@@ -121,12 +121,14 @@
 
 	let svgElement: SVGSVGElement;
 	let canvasElement: HTMLCanvasElement;
-	let exporting = false;
+	let exporting = false,
+		rendering = false;
 
 	const exportComponent = async (comp: string) => {
 		const userComponent = localOpts.currentComponent;
 		localOpts.currentComponent = comp;
 
+		rendering = true;
 		await new Promise<void>((r) => setTimeout(r, 200)); // TODO: do I have to wait for the animation & renderer?
 
 		const svgString = new XMLSerializer().serializeToString(svgElement);
@@ -161,6 +163,7 @@
 				DOMURL.revokeObjectURL(url);
 				localOpts.currentComponent = userComponent;
 
+				rendering = false;
 				resolve();
 			};
 		});
@@ -240,14 +243,34 @@
 		in:scale|global={{ delay: 500 }}
 		bind:this={editorElement}
 	>
-		<svg class="h-[80%] w-[80%]" viewBox="0 0 176 221" xmlns="http://www.w3.org/2000/svg" bind:this={svgElement}>
-			<svg y={0} class="render-exclude"><FHead /></svg>
+		<svg
+			class="h-[80%] w-[80%]"
+			viewBox="0 0 176 221"
+			width="176"
+			height="221"
+			xmlns="http://www.w3.org/2000/svg"
+			preserveAspectRatio="xMidYMin"
+			style="-webkit-transform: scale(1); transform: scale(1)"
+			bind:this={svgElement}
+		>
+			<svg y={0} class={localOpts.currentComponent != 'Default' ? 'render-exclude-always' : 'render-exclude'}><FHead /></svg>
 
 			{#each Array($pr[pi].rows) as _, i (i)}
-				<svg y={17 + i * 18} transition:darken={{ duration: 500, delay: 300 }} class="render-exclude"><FRow /></svg>
+				<svg
+					y={17 + i * 18}
+					transition:darken={{ duration: 500, delay: 300 }}
+					class={localOpts.currentComponent != 'Default' ? 'render-exclude-always' : 'render-exclude'}
+				>
+					<FRow />
+				</svg>
 			{/each}
 
-			<svg y={$footY} class="render-exclude transition-[y_transform]"><FFoot /></svg>
+			<svg
+				y={$footY}
+				class="{localOpts.currentComponent != 'Default' ? 'render-exclude-always' : 'render-exclude'} transition-[y_transform]"
+			>
+				<FFoot />
+			</svg>
 
 			<!-- / -->
 
