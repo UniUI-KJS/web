@@ -22,7 +22,7 @@
 </svelte:head>
 
 <div class="grid h-full gap-4 *:overflow-y-scroll lg:grid-cols-[auto_1fr]">
-	<div class="flex flex-col gap-2 bg-surface-800 p-8 lg:w-96" in:slide={{ axis: 'x', delay: 1000 }}>
+	<div class="flex flex-col gap-2 bg-surface-800 p-8 lg:w-96" in:slide={{ axis: 'x', delay: 100 }}>
 		<div class="flex gap-2">
 			<a href="{base}/" class="btn-icon my-auto hover:variant-soft-primary">
 				<ArrowLeftIcon />
