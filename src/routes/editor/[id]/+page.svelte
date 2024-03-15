@@ -127,7 +127,7 @@
 		const userComponent = localOpts.currentComponent;
 		localOpts.currentComponent = comp;
 
-		// await new Promise<void>((r) => setTimeout(r, 1)); // do I have to wait for the animation & renderer?
+		await new Promise<void>((r) => setTimeout(r, 200)); // TODO: do I have to wait for the animation & renderer?
 
 		const svgString = new XMLSerializer().serializeToString(svgElement);
 		const parser = new DOMParser();
