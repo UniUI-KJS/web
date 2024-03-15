@@ -116,20 +116,18 @@
 		await footY.set(v);
 		footering = false;
 	};
-	$: rows = $pr[pi].rows;
+	$: rows = +$pr[pi].rows || 3;
 	$: setFootY(17 + rows * 18);
 
 	let svgElement: SVGSVGElement;
 	let canvasElement: HTMLCanvasElement;
-	let exporting = false,
-		rendering = false;
+	let exporting = false;
 
 	const exportComponent = async (comp: string) => {
 		const userComponent = localOpts.currentComponent;
 		localOpts.currentComponent = comp;
 
-		rendering = true;
-		await new Promise<void>((r) => setTimeout(r, 200)); // TODO: do I have to wait for the animation & renderer?
+		// await new Promise<void>((r) => setTimeout(r, 1)); // do I have to wait for the animation & renderer?
 
 		const svgString = new XMLSerializer().serializeToString(svgElement);
 		const parser = new DOMParser();
@@ -163,14 +161,13 @@
 				DOMURL.revokeObjectURL(url);
 				localOpts.currentComponent = userComponent;
 
-				rendering = false;
 				resolve();
 			};
 		});
 	};
 	const exportAllComponents = async () => {
 		const loadingToast = toast.loading('Rendering components...');
-		await new Promise<void>((r) => setTimeout(r, 500));
+		// await new Promise<void>((r) => setTimeout(r, 500));
 
 		for (const c of Object.keys($pr[pi].components)) {
 			toast.loading(`Rendering component '${c}'...`, { id: loadingToast });
@@ -255,7 +252,7 @@
 		>
 			<svg y={0} class={localOpts.currentComponent != 'Default' ? 'render-exclude-always' : 'render-exclude'}><FHead /></svg>
 
-			{#each Array($pr[pi].rows) as _, i (i)}
+			{#each Array(+$pr[pi].rows || 3) as _, i (i)}
 				<svg
 					y={17 + i * 18}
 					transition:darken={{ duration: 500, delay: 300 }}
@@ -415,7 +412,7 @@
 					await new Promise(async (r) => (await exportAllComponents(), r()));
 					goto(base + '/editor/' + $page.params.id + '/preview');
 				}}
-				disabled={localOpts.noExportButton || exporting}
+				disabled={localOpts.noExportButton || exporting || $page.params.id == 'test'}
 			>
 				<ScanEyeIcon class="mr-2 h-6 w-6" /> Preview
 			</button>
@@ -446,9 +443,9 @@
 						localOpts.noExportButton = false;
 					}
 				}}
-				disabled={localOpts.noExportButton || exporting}
+				disabled={localOpts.noExportButton || exporting || $page.params.id == 'test'}
 			>
-				<UploadIcon class="mr-2 h-6 w-6" /> Export!
+				<UploadIcon class="mr-2 h-6 w-6" /> Export! {#if $page.params.id == 'test'}(disabled - test mode){/if}
 			</button>
 		</div>
 	</div>

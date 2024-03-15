@@ -46,14 +46,46 @@
 		if (ver != 0) {
 			modalStore.clear();
 			modalStore.trigger({
-				type: 'alert',
+				type: 'confirm',
 
 				title: 'Unsupported browser',
 				body:
 					"UniUI editor is not supported on Firefox due to SVG rendering issues on Mozilla's" +
 					' end. Prefer using Chrome or another Chromium-based browser.',
 
-				buttonTextCancel: 'aight'
+				buttonTextConfirm: 'understood!',
+				buttonTextCancel: 'open test project',
+
+				response: (r) => {
+					if (r === false) {
+						if (!$interfacesStore.find((p) => p.id == 'test'))
+							$interfacesStore = [
+								...$interfacesStore,
+								{
+									id: 'test',
+									name: 'Test project',
+									toolbox: [],
+									components: { Default: Array(9 * (6 + 4)).fill(null) },
+									rows: 3,
+									greedyExport: false,
+									modifyPlayerSlots: false,
+									images: {},
+									interactions: {}
+								}
+							];
+
+						modalStore.trigger({
+							type: 'alert',
+
+							title: 'Test project!',
+							body:
+								"YOU CANNOT EXPORT THIS PROJECT! If you'd like to use UniUI past initial" +
+								' editor impressions, use a compatible browser, like Chrome.'
+						});
+
+						goto(`${base}/editor/test/`);
+					}
+				}
 			});
 
 			return goto(`${base}/`);
