@@ -29,3 +29,25 @@ export const interfacesStore = localStorageStore<
 		interactions: Record<number, string>;
 	}[]
 >('uniuiInterfaces', []);
+
+/* --- */
+
+export function tdrawFrom(input: string): boolean[][] {
+	const [sizeStr, drawingStr] = input.split(';');
+
+	const [w, h] = sizeStr.split('x');
+	if (!w || !h || +w != +h || +w > 32 || +h > 32) return [];
+
+	let drawing = Array(+w)
+		.fill(null)
+		.map(() => Array(+h).fill(false));
+	drawingStr.split('').forEach((char, i) => (drawing[Math.floor(i / +w)][i % +w] = char == '1'));
+
+	return drawing;
+}
+
+export function tdrawTo(input: boolean[][], { w, h } = { w: 0, h: 0 }): string {
+	return `${w}x${h};${input
+		.map((row) => row.map((char) => (char ? '1' : '0')).join(''))
+		.join('')}`;
+}

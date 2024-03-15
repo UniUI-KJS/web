@@ -1,14 +1,11 @@
 <script>
 	import { base } from '$app/paths';
-	import { Modal } from '@skeletonlabs/skeleton';
 	import { fly, blur } from 'svelte/transition';
 </script>
 
 <svelte:head>
 	<title>Say hello to UniUI.</title>
 </svelte:head>
-
-<Modal />
 
 <div class="container mx-auto flex h-full items-center justify-center">
 	<div class="flex flex-col items-center space-y-10 text-center">

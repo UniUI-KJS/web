@@ -2,13 +2,40 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { interfacesStore } from '$lib';
+	import LookAlikeModal from '$lib/components/modal/LookAlikeModal.svelte';
+	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
 	import { toast } from 'svelte-sonner';
 	import { blur, fly } from 'svelte/transition';
 	import Project from './Project.svelte';
-	import { onMount } from 'svelte';
-	import { getModalStore } from '@skeletonlabs/skeleton';
 
-	const newProj = (e: SubmitEvent, projectId: string) => {
+	const newProj = async (e: SubmitEvent, projectId: string) => {
+		modalStore.clear();
+
+		await new Promise<void>((resolve, reject) =>
+			modalStore.trigger({
+				type: 'component',
+				component: { ref: LookAlikeModal },
+
+				response: (r) => {
+					if (r === undefined) return reject();
+
+					if (r === false) {
+						modalStore.trigger({
+							type: 'alert',
+
+							title: "UniUI won't work as expected!",
+							body: 'Prefer using a different browser, preferably a Chromium-based one, like Chrome.',
+
+							buttonTextCancel: 'Understood, continue to editor'
+						});
+					}
+
+					resolve();
+				}
+			})
+		);
+		//#endregion
+
 		const target = e.target as HTMLFormElement;
 		target.button.disabled = true;
 
@@ -38,64 +65,13 @@
 	};
 
 	const modalStore = getModalStore();
-
-	onMount(() => {
-		const match = window.navigator.userAgent.match(/Firefox\/([0-9]+)\./);
-		const ver = match ? parseInt(match[1]) : 0;
-
-		if (ver != 0) {
-			modalStore.clear();
-			modalStore.trigger({
-				type: 'confirm',
-
-				title: 'Unsupported browser',
-				body:
-					"UniUI editor is not supported on Firefox due to SVG rendering issues on Mozilla's" +
-					' end. Prefer using Chrome or another Chromium-based browser.',
-
-				buttonTextConfirm: 'understood!',
-				buttonTextCancel: 'open test project',
-
-				response: (r) => {
-					if (r === false) {
-						if (!$interfacesStore.find((p) => p.id == 'test'))
-							$interfacesStore = [
-								...$interfacesStore,
-								{
-									id: 'test',
-									name: 'Test project',
-									toolbox: [],
-									components: { Default: Array(9 * (6 + 4)).fill(null) },
-									rows: 3,
-									greedyExport: false,
-									modifyPlayerSlots: false,
-									images: {},
-									interactions: {}
-								}
-							];
-
-						modalStore.trigger({
-							type: 'alert',
-
-							title: 'Test project!',
-							body:
-								"YOU CANNOT EXPORT THIS PROJECT! If you'd like to use UniUI past initial" +
-								' editor impressions, use a compatible browser, like Chrome.'
-						});
-
-						goto(`${base}/editor/test/`);
-					}
-				}
-			});
-
-			return goto(`${base}/`);
-		}
-	});
 </script>
 
 <svelte:head>
 	<title>Projects [UniUI Editor]</title>
 </svelte:head>
+
+<Modal />
 
 <p class="fixed bottom-4 left-4 max-w-[33%] text-balance text-surface-300" in:fly|global={{ x: 20, delay: 2000 }}>
 	Note: UniUI editor is really opinionated. If you want to use your own UI style, feel free to build your own textures.

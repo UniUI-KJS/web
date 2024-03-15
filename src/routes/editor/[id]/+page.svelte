@@ -412,7 +412,7 @@
 					await new Promise(async (r) => (await exportAllComponents(), r()));
 					goto(base + '/editor/' + $page.params.id + '/preview');
 				}}
-				disabled={localOpts.noExportButton || exporting || $page.params.id == 'test'}
+				disabled={localOpts.noExportButton || exporting}
 			>
 				<ScanEyeIcon class="mr-2 h-6 w-6" /> Preview
 			</button>
@@ -443,9 +443,9 @@
 						localOpts.noExportButton = false;
 					}
 				}}
-				disabled={localOpts.noExportButton || exporting || $page.params.id == 'test'}
+				disabled={localOpts.noExportButton || exporting}
 			>
-				<UploadIcon class="mr-2 h-6 w-6" /> Export! {#if $page.params.id == 'test'}(disabled - test mode){/if}
+				<UploadIcon class="mr-2 h-6 w-6" /> Export!
 			</button>
 		</div>
 	</div>
