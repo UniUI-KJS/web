@@ -2,40 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { interfacesStore } from '$lib';
-	import LookAlikeModal from '$lib/components/modal/LookAlikeModal.svelte';
-	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
 	import { toast } from 'svelte-sonner';
 	import { blur, fly } from 'svelte/transition';
 	import Project from './Project.svelte';
 
 	const newProj = async (e: SubmitEvent, projectId: string) => {
-		modalStore.clear();
-
-		await new Promise<void>((resolve, reject) =>
-			modalStore.trigger({
-				type: 'component',
-				component: { ref: LookAlikeModal },
-
-				response: (r) => {
-					if (r === undefined) return reject();
-
-					if (r === false) {
-						modalStore.trigger({
-							type: 'alert',
-
-							title: "UniUI won't work as expected!",
-							body: 'Prefer using a different browser, preferably a Chromium-based one, like Chrome.',
-
-							buttonTextCancel: 'Understood, continue to editor'
-						});
-					}
-
-					resolve();
-				}
-			})
-		);
-		//#endregion
-
 		const target = e.target as HTMLFormElement;
 		target.button.disabled = true;
 
@@ -63,15 +34,11 @@
 
 		setTimeout(() => goto(`${base}/editor/${projectId}/`), 100);
 	};
-
-	const modalStore = getModalStore();
 </script>
 
 <svelte:head>
 	<title>Projects [UniUI Editor]</title>
 </svelte:head>
-
-<Modal />
 
 <p class="fixed bottom-4 left-4 max-w-[33%] text-balance text-surface-300" in:fly|global={{ x: 20, delay: 2000 }}>
 	Note: UniUI editor is really opinionated. If you want to use your own UI style, feel free to build your own textures.
