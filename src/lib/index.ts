@@ -47,7 +47,5 @@ export function tdrawFrom(input: string): boolean[][] {
 }
 
 export function tdrawTo(input: boolean[][], { w, h } = { w: 0, h: 0 }): string {
-	return `${w}x${h};${input
-		.map((row) => row.map((char) => (char ? '1' : '0')).join(''))
-		.join('')}`;
+	return `${w}x${h};${input.map((row) => row.map((char) => (char ? '1' : '0')).join('')).join('')}`;
 }
