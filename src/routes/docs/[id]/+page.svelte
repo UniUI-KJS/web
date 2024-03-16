@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
+	import { TreeView } from '@skeletonlabs/skeleton';
 	import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-svelte';
 	import markdownit from 'markdown-it';
 	import { slide } from 'svelte/transition';
+	import RecursiveDocsTree from './RecursiveDocsTree.svelte';
 
 	const md = markdownit();
 
@@ -30,11 +32,9 @@
 			<h1 class="h3 my-4">Documentation</h1>
 		</div>
 
-		{#each docs as [id, name]}
-			<a href="{base}/docs/{id}" class="hover:underline hover:underline-offset-2 {id == $page.params.id && 'text-primary-500'}">
-				{name}
-			</a>
-		{/each}
+		<TreeView padding="px-2 py-1">
+			<RecursiveDocsTree {docs} />
+		</TreeView>
 	</div>
 
 	<div class="p-4 lg:p-16">
