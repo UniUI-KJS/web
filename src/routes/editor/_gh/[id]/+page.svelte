@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { interfacesStore, type ArrayElement } from '$lib';
 	import Previewer from '$lib/components/Previewer.svelte';
-	import { base } from '$app/paths';
-	import { CopyIcon, GithubIcon } from 'lucide-svelte';
+	import { CopyIcon } from 'lucide-svelte';
+	import { fly } from 'svelte/transition';
 
 	const ui: ArrayElement<typeof $interfacesStore> = JSON.parse($page.data.ui);
 </script>
@@ -15,12 +16,12 @@
 
 <div class="container mx-auto flex max-w-screen-lg flex-col gap-2 py-4 md:py-8">
 	<div class="flex items-center justify-between">
-		<h1 class="h2">{ui.name}</h1>
+		<h1 class="h2" in:fly|global={{ y: 20, delay: 100 }}>{ui.name}</h1>
 
-		<div class="flex gap-2">
-			<a href={$page.data.hub} class="variant-soft-primary btn">
+		<div class="flex gap-2" in:fly|global={{ y: 20, delay: 600 }}>
+			<!-- <a href={$page.data.hub} class="variant-soft-primary btn">
 				<GithubIcon class="mr-2 h-6 w-6" /> View Gist
-			</a>
+			</a> -->
 			<button
 				class="variant-filled-primary btn"
 				on:click={() => {
@@ -42,9 +43,9 @@
 		</div>
 	</div>
 
-	<p>User-submitted UniUI interface. All credits go to the original author.</p>
+	<p in:fly|global={{ y: 20, delay: 200 }}>User-submitted UniUI interface. All credits go to the original author.</p>
 
-	<div class="relative mt-4 h-[80vh] w-full rounded-lg border">
+	<div class="relative mt-4 h-[80vh] w-full rounded-lg border" in:fly|global={{ y: 20, delay: 400 }}>
 		<Previewer pics={ui.images} components={Object.keys(ui.components)} class="h-full" />
 	</div>
 </div>

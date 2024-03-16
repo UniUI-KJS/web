@@ -2,6 +2,8 @@
 	export let renderSize = 24;
 	export let canvas: boolean[][] = [];
 
+	let mouseMoveMode: false | 'w' | 'b' = false;
+
 	function handleClick(row: number, col: number) {
 		canvas[row][col] = !canvas[row][col];
 		canvas = canvas;
@@ -17,7 +19,9 @@
 				<button
 					style="width: {renderSize}px; height: {renderSize}px; background-color: {!pixel ? 'black' : 'white'};"
 					class="border-primary-500 hover:border-2"
-					on:click={() => handleClick(rowIndex, colIndex)}
+					on:mousedown={() => (handleClick(rowIndex, colIndex), (mouseMoveMode = !pixel ? 'b' : 'w'))}
+					on:mouseup={() => (mouseMoveMode = false)}
+					on:mouseenter={() => mouseMoveMode && pixel == (mouseMoveMode == 'w') && handleClick(rowIndex, colIndex)}
 				/>
 			{/each}
 		</div>

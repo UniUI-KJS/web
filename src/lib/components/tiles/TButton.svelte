@@ -6,7 +6,7 @@
 	export let pos = { x: 0, y: 0 };
 
 	export let opts = options.Button.initialOpts;
-	$: props = _.defaults(opts, options.Button.initialOpts);
+	$: props = _.defaults(opts, options.Button.initialOpts) as typeof options.Button.initialOpts;
 
 	$: background = !props.Disabled ? Color(props.Accent).hex() : Color('#9E9E9E').mix(Color(props.Accent), 0.4).lighten(-0.1).hex();
 	$: darker = !props.Disabled ? Color(props.Accent).lighten(-0.3).hex() : Color('#9E9E9E').mix(Color(props.Accent), 0.4).lighten(0.1).hex();

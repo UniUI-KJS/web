@@ -5,7 +5,7 @@
 	export let pos = { x: 0, y: 0 };
 
 	export let opts = options.Slot.initialOpts;
-	$: props = _.defaults(opts, options.Slot.initialOpts);
+	$: props = _.defaults(opts, options.Slot.initialOpts) as typeof options.Slot.initialOpts;
 </script>
 
 <g style="transform: translateX({pos.x}px) translateY({pos.y}px);" {...$$restProps}>

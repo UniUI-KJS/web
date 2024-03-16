@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tdrawFrom } from '$lib';
 	import DrawArea from '$lib/components/DrawArea.svelte';
 	import TilePreview from '$lib/components/TilePreview.svelte';
 	import tiles from '$lib/components/tiles';
@@ -54,7 +55,10 @@
 
 					{#if tileV?.options}
 						{#each Object.entries(tileV?.options) as [opt, val]}
-							<label class="flex {['boolean', 'number', 'size'].includes(val.type) ? 'justify-between' : 'flex-col'}">
+							<label
+								class="flex {['boolean', 'number', 'size'].includes(val.type) ? 'justify-between' : 'flex-col'}"
+								for={['draw'].includes(val.type) ? '???' : undefined}
+							>
 								<div>
 									<p>{opt}</p>
 									<p class="{['boolean', 'number', 'size'].includes(val.type) ? 'my-auto' : 'mb-2'} text-sm opacity-75">
@@ -69,8 +73,24 @@
 										<input type="checkbox" bind:checked={tileToAdd.options[opt]} class="checkbox size-8" />
 									{:else if val.type == 'draw'}
 										<DrawArea bind:canvas={tileToAdd.options[opt]} />
-										<ArrowLeftIcon class="ml-8" />
-										<BrushIcon />
+
+										{#if val.meta}
+											<ArrowLeftIcon />
+											<select
+												class="select w-48 text-surface-300"
+												on:change={(e) => {
+													// @ts-expect-error
+													tileToAdd.options[opt] = tdrawFrom(e.target?.value);
+													// @ts-expect-error
+													e.target.value = '';
+												}}
+											>
+												<option value="">Use a template</option>
+												{#each Object.entries(val.meta) as [name, template]}
+													<option value={template}>{name}</option>
+												{/each}
+											</select>
+										{/if}
 									{:else if val.type == 'color'}
 										<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 											<div class="input-group-shim !p-1">

@@ -482,6 +482,33 @@
 								.then(async (r) => {
 									if (r.ok) {
 										const { id } = await r.json();
+
+										toast.success('Interface published', {
+											description: 'Share this link to your friends!',
+											duration: 30 * 1000,
+											action: {
+												label: 'Undo',
+												onClick: () => {
+													fetch('https://api.github.com/gists/' + id, {
+														method: 'DELETE',
+														headers: {
+															Authorization: 'Bearer ' + Cookies.get('uniui-token')
+														}
+													}).then((r) => {
+														if (r.ok)
+															toast.warning('Interface unpublished', {
+																description: 'Invalidated share link.'
+															});
+														else
+															toast.error('Failed to unpublish interface.', {
+																description: 'Please check gists.github.com and manually unpublish.'
+															});
+													});
+													goto(base + '/editor');
+												}
+											}
+										});
+
 										goto(base + '/editor/_gh/' + id);
 									} else {
 										const { message } = await r.json();
