@@ -12,7 +12,7 @@
 	$: doc = md
 		.render($page.data.doc)
 		.replace(
-			/\(- example ([\-a-zA-z]*) -\)/g,
+			/\(- example ([\-a-zA-z0-9]*) -\)/g,
 			`<a href="${base}/editor/_gh/$1" class="btn variant-filled-primary no-underline">Import this example</a>`
 		);
 	let docs = Object.entries($page.data.docs);
