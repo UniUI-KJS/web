@@ -16,12 +16,12 @@ export default {
 					[1, 7],
 					[1, 2]
 				]
-			},
-			MultiMode: {
+			}
+			/* MultiMode: {
 				description: 'The multi mode, used for split buttons and similar',
 				type: 'select',
 				meta: ['single', 'left', 'center', 'right']
-			}
+			} */
 		},
 		initialOpts: {
 			Disabled: false,
