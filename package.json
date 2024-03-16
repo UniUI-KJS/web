@@ -41,6 +41,8 @@
   "dependencies": {
     "@floating-ui/dom": "^1.6.3",
     "@neodrag/svelte": "^2.0.3",
+    "@vercel/analytics": "^1.2.2",
+    "@vercel/speed-insights": "^1.0.10",
     "color": "^4.2.3",
     "dotenv": "^16.4.5",
     "html2canvas": "^1.4.1",

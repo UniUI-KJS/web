@@ -21,6 +21,14 @@
 	let navigating = false;
 	beforeNavigate(() => (navigating = true));
 	afterNavigate(() => (navigating = false));
+
+	/* --- */
+
+	import { inject as injectAnalytics } from '@vercel/analytics';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+
+	injectAnalytics();
+	injectSpeedInsights();
 </script>
 
 <svelte:head>
