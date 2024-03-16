@@ -14,7 +14,7 @@
 	<title>{ui.name} [Import]</title>
 </svelte:head>
 
-<div class="container mx-auto flex max-w-screen-lg flex-col gap-2 px-2 py-4 md:py-8">
+<div class="container mx-auto flex max-w-screen-lg flex-col gap-2 px-2 py-4">
 	<div class="flex items-center justify-between">
 		<h1 class="h2" in:fly|global={{ y: 20, delay: 100 }}>{ui.name}</h1>
 
@@ -47,5 +47,11 @@
 
 	<div class="relative mt-4 h-full w-full rounded-lg border md:h-[80vh]" in:fly|global={{ y: 20, delay: 400 }}>
 		<Previewer pics={ui.images} components={Object.keys(ui.components)} class="h-full pb-16" />
+	</div>
+
+	<div class="flex justify-center">
+		<a href="{base}/" class="btn w-fit rounded-full hover:variant-soft">
+			<h1 class="h3">UniUI</h1>
+		</a>
 	</div>
 </div>
