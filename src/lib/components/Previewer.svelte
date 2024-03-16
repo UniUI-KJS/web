@@ -20,7 +20,7 @@
 					<img src={pics[c]} alt={c} class="h-full w-full" style="image-rendering: pixelated;" />
 				</foreignObject>
 			{/each}
-			<rect x="0.5" y="0.5" width="175" height="221" stroke="#00000022" fill="none" />
+			<!-- <rect x="0.5" y="0.5" width="175" height="221" stroke="#00000022" fill="none" /> -->
 		</svg>
 	</div>
 
