@@ -13,10 +13,9 @@
 		.render($page.data.doc)
 		.replace(
 			/\(- example ([\-a-zA-z]*) -\)/g,
-			`<a href="{base}/editor/importExample/$1" class="btn variant-filled-primary no-underline">Import this example</a>`
+			`<a href="${base}/editor/_gh/$1" class="btn variant-filled-primary no-underline">Import this example</a>`
 		);
 	let docs = Object.entries($page.data.docs);
-	$: docIndex = docs.findIndex((d) => d[0] == $page.params.id);
 </script>
 
 <svelte:head>
