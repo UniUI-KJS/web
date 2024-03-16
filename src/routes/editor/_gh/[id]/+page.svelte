@@ -11,9 +11,6 @@
 
 <svelte:head>
 	<title>{ui.name} [Import]</title>
-
-	<meta content="Import '{ui.name}'" property="og:title" />
-	<meta content="A user-submitted UniUI interface" property="og:description" />
 </svelte:head>
 
 <div class="container mx-auto flex max-w-screen-lg flex-col gap-2 py-4 md:py-8">
