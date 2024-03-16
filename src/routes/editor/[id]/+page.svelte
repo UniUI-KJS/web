@@ -458,6 +458,7 @@
 							$pr[pi].greedyExport = true;
 							// @ts-expect-error
 							await new Promise(async (r) => (await exportAllComponents(), r()));
+							$pr[pi].greedyExport = isGreedy;
 
 							fetch('https://api.github.com/gists', {
 								method: 'POST',
@@ -489,7 +490,6 @@
 								})
 								.finally(() => {
 									localOpts.noExportButton = false;
-									$pr[pi].greedyExport = isGreedy;
 								});
 						}}
 						disabled={localOpts.noExportButton || exporting}
@@ -607,7 +607,16 @@
 									localOpts.currentComponent = name;
 								}}
 							>
-								<input class="input" type="text" required autocomplete="off" id="componentName" placeholder="New component name" />
+								<input
+									class="input"
+									type="text"
+									required
+									autocomplete="off"
+									id="componentName"
+									placeholder="New component name"
+									name="snake_cased name"
+									pattern="[a-z_]+"
+								/>
 								<button class="variant-filled-primary btn" type="submit" id="close">Add</button>
 							</form>
 
