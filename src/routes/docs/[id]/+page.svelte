@@ -42,26 +42,6 @@
 			<div class="rabbity-animation prose prose-cyan max-w-full select-text dark:prose-invert [&_*]:select-text">
 				{@html doc}
 			</div>
-
-			<div class="mx-auto my-8 grid grid-cols-2 gap-4 2xl:w-1/2">
-				{#if docIndex > 0}
-					<a href="{base}/docs/{docs[docIndex - 1][0]}" class="card flex gap-2 p-2">
-						<ChevronLeftIcon />
-						{docs[docIndex - 1][1]}
-					</a>
-				{:else}
-					<div />
-				{/if}
-
-				{#if docIndex < docs.length - 1}
-					<a href="{base}/docs/{docs[docIndex + 1][0]}" class="card flex gap-2 p-2">
-						<ChevronRightIcon />
-						{docs[docIndex + 1][1]}
-					</a>
-				{:else}
-					<div />
-				{/if}
-			</div>
 		{/key}
 	</div>
 </div>
