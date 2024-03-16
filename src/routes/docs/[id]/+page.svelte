@@ -31,7 +31,7 @@
 			<h1 class="h3 my-4">Documentation</h1>
 		</div>
 
-		<TreeView padding="px-2 py-1" class="max-h-24 overflow-scroll lg:max-h-full">
+		<TreeView padding="px-2 py-1">
 			<RecursiveDocsTree {docs} />
 		</TreeView>
 	</div>
