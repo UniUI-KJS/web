@@ -7,8 +7,8 @@
 	import TilePreview from '$lib/components/TilePreview.svelte';
 	import { FFoot, FHead, FRow } from '$lib/components/outerFrame';
 	import tiles from '$lib/components/tiles';
-	import { getDrawerStore, popup, Modal, getModalStore } from '@skeletonlabs/skeleton';
-	import { PencilLineIcon, ScanEyeIcon, UploadIcon, WrenchIcon, ChevronLeftIcon } from 'lucide-svelte';
+	import { Modal, getDrawerStore, getModalStore, popup } from '@skeletonlabs/skeleton';
+	import { HammerIcon, PencilLineIcon, ScanEyeIcon, UploadIcon, WrenchIcon } from 'lucide-svelte';
 	import { elementSizeStore } from 'svelte-legos';
 	import { toast } from 'svelte-sonner';
 	import { expoOut } from 'svelte/easing';
@@ -404,49 +404,75 @@
 
 		<div class="absolute bottom-4 right-4 flex gap-2" in:slide|global={{ delay: 1500, axis: 'y' }}>
 			<button
-				class="variant-soft-primary btn"
-				on:click={async () => {
-					localOpts.noExportButton = true;
-
-					// @ts-expect-error
-					await new Promise(async (r) => (await exportAllComponents(), r()));
-					goto(base + '/editor/' + $page.params.id + '/preview');
-				}}
-				disabled={localOpts.noExportButton || exporting}
+				class="variant-soft-primary btn rounded-br-md"
+				use:popup={{ event: 'click', target: 'exportHelper', closeQuery: 'button', placement: 'left' }}
 			>
-				<ScanEyeIcon class="mr-2 h-6 w-6" /> Preview
+				<HammerIcon class="h-6 w-6" />
 			</button>
 
-			<button
-				class="variant-filled-primary btn rounded-br-md"
-				on:click={async () => {
-					localOpts.noExportButton = true;
+			<div class="card max-w-xs p-4" data-popup="exportHelper">
+				<div class="space-y-2 *:btn *:w-full">
+					<button
+						class="variant-soft-primary"
+						on:click={async () => {
+							localOpts.noExportButton = true;
 
-					// @ts-expect-error
-					await new Promise(async (r) => (await exportAllComponents(), r()));
+							// @ts-expect-error
+							await new Promise(async (r) => (await exportAllComponents(), r()));
+							goto(base + '/editor/' + $page.params.id + '/preview');
+						}}
+						disabled={localOpts.noExportButton || exporting}
+					>
+						<ScanEyeIcon class="mr-2 h-6 w-6" /> Preview
+					</button>
 
-					try {
-						const ws = new WebSocket('ws://localhost:8625');
-						ws.onerror = () => {
-							toast.error("Run 'npx uniui-kjs@latest generate' before trying to export.");
-							localOpts.noExportButton = false;
-						};
+					<!-- <button
+						class="variant-soft-primary"
+						on:click={async () => {
+							localOpts.noExportButton = true;
 
-						ws.onopen = () => {
-							exporting = true;
-							ws.send(JSON.stringify($pr[pi]));
+							// @ts-expect-error
+							await new Promise(async (r) => (await exportAllComponents(), r()));
+							goto(base + '/editor/' + $page.params.id + '/share');
+						}}
+						disabled={localOpts.noExportButton || exporting}
+					>
+						<GithubIcon class="mr-2 h-6 w-6" /> Share publicly
+					</button> -->
 
-							setTimeout(() => goto(base + '/editor/' + $page.params.id + '/exported'), 2000);
-						};
-					} catch (e) {
-						toast.error("Run 'npx uniui generate' before trying to export.");
-						localOpts.noExportButton = false;
-					}
-				}}
-				disabled={localOpts.noExportButton || exporting}
-			>
-				<UploadIcon class="mr-2 h-6 w-6" /> Export!
-			</button>
+					<button
+						class="variant-filled-primary"
+						on:click={async () => {
+							localOpts.noExportButton = true;
+
+							// @ts-expect-error
+							await new Promise(async (r) => (await exportAllComponents(), r()));
+
+							try {
+								const ws = new WebSocket('ws://localhost:8625');
+								ws.onerror = () => {
+									toast.error("Run 'npx uniui-kjs@latest generate' before trying to export.");
+									localOpts.noExportButton = false;
+								};
+
+								ws.onopen = () => {
+									exporting = true;
+									ws.send(JSON.stringify($pr[pi]));
+
+									setTimeout(() => goto(base + '/editor/' + $page.params.id + '/exported'), 2000);
+								};
+							} catch (e) {
+								toast.error("Run 'npx uniui generate' before trying to export.");
+								localOpts.noExportButton = false;
+							}
+						}}
+						disabled={localOpts.noExportButton || exporting}
+					>
+						<UploadIcon class="mr-2 h-6 w-6" /> Use in-game!
+					</button>
+				</div>
+				<div class="bg-surface-100-800-token arrow" />
+			</div>
 		</div>
 	</div>
 

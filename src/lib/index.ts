@@ -29,6 +29,7 @@ export const interfacesStore = localStorageStore<
 		interactions: Record<number, string>;
 	}[]
 >('uniuiInterfaces', []);
+export const authStore = localStorageStore<string | null>('uniuiAuth', null);
 
 /* --- */
 
