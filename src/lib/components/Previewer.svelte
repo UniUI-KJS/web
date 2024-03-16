@@ -24,7 +24,7 @@
 		</svg>
 	</div>
 
-	<div class="fixed bottom-8 left-8 flex w-96 flex-col gap-1">
+	<div class="fixed bottom-2 left-2 right-2 flex flex-col gap-1 lg:bottom-8 lg:left-8 lg:right-auto lg:w-96">
 		{#each components as c, i (c)}
 			<div class="group card flex items-center justify-between p-1 pl-4" animate:flip={{ duration: 300 }}>
 				{c}
