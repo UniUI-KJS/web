@@ -1,16 +1,21 @@
 <script lang="ts">
 	import Color from 'color';
 	import options from './options';
+	import _ from 'lodash';
 
 	export let pos = { x: 0, y: 0 };
+
 	export let opts = options.Button.initialOpts;
+	$: props = _.defaults(opts, options.Button.initialOpts);
 
-	$: background = !opts.Disabled ? Color(opts.Accent).hex() : Color('#9E9E9E').mix(Color(opts.Accent), 0.4).lighten(-0.1).hex();
-	$: darker = !opts.Disabled ? Color(opts.Accent).lighten(-0.3).hex() : Color('#9E9E9E').mix(Color(opts.Accent), 0.4).lighten(0.1).hex();
-	$: lighter = !opts.Disabled ? Color(opts.Accent).lighten(0.3).hex() : Color('#9E9E9E').mix(Color(opts.Accent), 0.4).lighten(-0.4).hex();
+	$: background = !props.Disabled ? Color(props.Accent).hex() : Color('#9E9E9E').mix(Color(props.Accent), 0.4).lighten(-0.1).hex();
+	$: darker = !props.Disabled ? Color(props.Accent).lighten(-0.3).hex() : Color('#9E9E9E').mix(Color(props.Accent), 0.4).lighten(0.1).hex();
+	$: lighter = !props.Disabled
+		? Color(props.Accent).lighten(0.3).hex()
+		: Color('#9E9E9E').mix(Color(props.Accent), 0.4).lighten(-0.4).hex();
 
-	$: width = 18 * opts.Size[0];
-	$: height = 18 * opts.Size[1];
+	$: width = 18 * props.Size[0];
+	$: height = 18 * props.Size[1];
 </script>
 
 <g style="transform: translateX({pos.x}px) translateY({pos.y}px);" {...$$restProps}>
@@ -28,18 +33,18 @@
 
 	<!-- icon -->
 	<svg width="8" height="7" viewBox="0 0 8 7" x={width / 2 - 4} y={height / 2 - 4} style="overflow: visible">
-		{#each opts.Icon ?? [] as row, rowIndex}
+		{#each props.Icon ?? [] as row, rowIndex}
 			{#each row as pixel, colIndex}
 				{#if pixel}
-					{#if opts.IconStyle == 'shadow'}
-						{#if !opts.Disabled}
+					{#if props.IconStyle == 'shadow'}
+						{#if !props.Disabled}
 							<rect x={colIndex} y={rowIndex + 1} width="1" height="1" fill={darker} />
 						{/if}
-						<rect x={colIndex} y={rowIndex} width="1" height="1" fill={!opts.Disabled ? '#FFFFFF' : lighter} />
-					{:else if opts.IconStyle == 'dark'}
+						<rect x={colIndex} y={rowIndex} width="1" height="1" fill={!props.Disabled ? '#FFFFFF' : lighter} />
+					{:else if props.IconStyle == 'dark'}
 						<rect x={colIndex} y={rowIndex} width="1" height="1" fill={darker} />
-					{:else if opts.IconStyle == 'light'}
-						<rect x={colIndex} y={rowIndex} width="1" height="1" fill={!opts.Disabled ? '#FFFFFF' : lighter} />
+					{:else if props.IconStyle == 'light'}
+						<rect x={colIndex} y={rowIndex} width="1" height="1" fill={!props.Disabled ? '#FFFFFF' : lighter} />
 					{/if}
 				{/if}
 			{/each}

@@ -2,13 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
-	import { darken, interfacesStore as pr } from '$lib';
+	import { GH_CLIENT_ID, darken, interfacesStore as pr } from '$lib';
 	import TilePlaceholder from '$lib/components/TilePlaceholder.svelte';
 	import TilePreview from '$lib/components/TilePreview.svelte';
 	import { FFoot, FHead, FRow } from '$lib/components/outerFrame';
 	import tiles from '$lib/components/tiles';
 	import { Modal, getDrawerStore, getModalStore, popup } from '@skeletonlabs/skeleton';
-	import { HammerIcon, PencilLineIcon, ScanEyeIcon, UploadIcon, WrenchIcon } from 'lucide-svelte';
+	import { GithubIcon, HammerIcon, PencilLineIcon, ScanEyeIcon, UploadIcon, WrenchIcon } from 'lucide-svelte';
 	import { elementSizeStore } from 'svelte-legos';
 	import { toast } from 'svelte-sonner';
 	import { expoOut } from 'svelte/easing';
@@ -16,6 +16,8 @@
 	import { readable } from 'svelte/store';
 	import { fly, scale, slide } from 'svelte/transition';
 	import EditorDrawer from './EditorDrawer.svelte';
+	import Cookies from 'js-cookie';
+	import { onMount } from 'svelte';
 
 	const pi = $pr.findIndex((p) => p.id == $page.params.id);
 
@@ -182,6 +184,13 @@
 		if (currentTile >= 0) return 'Placing ' + $pr[pi].toolbox[currentTile]?.name;
 		return '';
 	})();
+
+	onMount(() => {
+		if ($page.url.searchParams.get('welcomer')) {
+			toast.info($page.url.searchParams.get('welcomer')!);
+			goto(base + '/editor/' + $page.params.id);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -416,7 +425,6 @@
 						class="variant-soft-primary"
 						on:click={async () => {
 							localOpts.noExportButton = true;
-
 							// @ts-expect-error
 							await new Promise(async (r) => (await exportAllComponents(), r()));
 							goto(base + '/editor/' + $page.params.id + '/preview');
@@ -426,25 +434,73 @@
 						<ScanEyeIcon class="mr-2 h-6 w-6" /> Preview
 					</button>
 
-					<!-- <button
+					<button
 						class="variant-soft-primary"
 						on:click={async () => {
-							localOpts.noExportButton = true;
+							if (!Cookies.get('uniui-token'))
+								return toast.warning('To publish an interface, you must be signed in!', {
+									action: {
+										label: 'Sign in',
+										onClick: () => {
+											const baseUrl = 'https://github.com/login/oauth/authorize';
+											const params = new URLSearchParams({
+												scope: 'gist',
+												client_id: GH_CLIENT_ID,
+												redirect_uri: window.location.origin + base + '/editor/_gh/?task=export&ref=' + $page.params.id
+											});
+											window.location.href = `${baseUrl}?${params.toString()}`;
+										}
+									}
+								});
 
+							const isGreedy = $pr[pi].greedyExport;
+							localOpts.noExportButton = true;
+							$pr[pi].greedyExport = true;
 							// @ts-expect-error
 							await new Promise(async (r) => (await exportAllComponents(), r()));
-							goto(base + '/editor/' + $page.params.id + '/share');
+
+							fetch('https://api.github.com/gists', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+									Authorization: 'Bearer ' + Cookies.get('uniui-token')
+								},
+								body: JSON.stringify({
+									description: $pr[pi].name + ' - a UniUI interface',
+									public: false,
+									files: {
+										['!> ' + $pr[pi].name + ' - a UniUI interface <!']: {
+											content: 'Generated with UniUI editor'
+										},
+										['ui.json']: {
+											content: btoa(JSON.stringify($pr[pi]))
+										}
+									}
+								})
+							})
+								.then(async (r) => {
+									if (r.ok) {
+										const { id } = await r.json();
+										goto(base + '/editor/_gh/' + id);
+									} else {
+										const { message } = await r.json();
+										toast.error(message);
+									}
+								})
+								.finally(() => {
+									localOpts.noExportButton = false;
+									$pr[pi].greedyExport = isGreedy;
+								});
 						}}
 						disabled={localOpts.noExportButton || exporting}
 					>
 						<GithubIcon class="mr-2 h-6 w-6" /> Share publicly
-					</button> -->
+					</button>
 
 					<button
 						class="variant-filled-primary"
 						on:click={async () => {
 							localOpts.noExportButton = true;
-
 							// @ts-expect-error
 							await new Promise(async (r) => (await exportAllComponents(), r()));
 

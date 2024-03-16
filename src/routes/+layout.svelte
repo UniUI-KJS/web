@@ -26,8 +26,10 @@
 <svelte:head>
 	<title>UniUI</title>
 
-	<meta content="UniUI" property="og:title" />
-	<meta content="Opinionated UI library for KubeJS. Build your own UIs with ease in less than 5 minutes." property="og:description" />
+	{#if !['/editor/_gh/[id]'].includes($page.route.id ?? '')}
+		<meta content="UniUI" property="og:title" />
+		<meta content="Opinionated UI library for KubeJS. Build your own UIs with ease in less than 5 minutes." property="og:description" />
+	{/if}
 	<meta content="{base}/uniui.png" property="og:image" />
 	<meta name="theme-color" content="#b74848" />
 </svelte:head>

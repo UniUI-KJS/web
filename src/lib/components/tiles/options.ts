@@ -16,6 +16,11 @@ export default {
 					[1, 7],
 					[1, 2]
 				]
+			},
+			MultiMode: {
+				description: 'The multi mode, used for split buttons and similar',
+				type: 'select',
+				meta: ['single', 'left', 'center', 'right']
 			}
 		},
 		initialOpts: {
@@ -25,9 +30,11 @@ export default {
 				.fill(null)
 				.map(() => Array(8).fill(false)),
 			IconStyle: 'shadow',
-			Size: [1, 1]
+			Size: [1, 1],
+			MultiMode: 'single'
 		}
 	},
+
 	Slot: {
 		options: {
 			Style: {
