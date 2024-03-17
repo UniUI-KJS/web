@@ -14,11 +14,10 @@
 	<h1 class="h1">Signed in!</h1>
 </div>
 
-<div class="absolute bottom-1 left-1 right-1 flex">
+<div class="absolute bottom-1 left-1 right-1 flex" in:fade|global={{ duration: 1, delay: 2000 }}>
 	<a
 		href="http://localhost:5173/{base}/editor/_gh?token={Cookies.get('uniui-token')}"
-		class="btn btn-sm"
-		in:fade={{ duration: 1, delay: 2000 }}
+		class="variant-ghost-surface btn btn-sm mx-auto w-fit"
 	>
 		Use development server
 	</a>
