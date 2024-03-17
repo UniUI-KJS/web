@@ -53,7 +53,7 @@
 	</p>
 
 	<div class="relative mt-4 h-full w-full rounded-lg border md:h-[80vh]" in:fly|global={{ y: 20, delay: 400 }}>
-		<Previewer pics={ui.images} components={Object.keys(ui.components)} class="h-full pb-16" />
+		<Previewer pics={ui.images} components={Object.keys(ui.components)} class="h-full pb-16" rows={ui.rows} title={ui.name} />
 	</div>
 
 	<div class="flex justify-center">

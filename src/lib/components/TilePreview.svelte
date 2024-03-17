@@ -2,9 +2,17 @@
 	export let tile: ConstructorOfATypedSvelteComponent | undefined = undefined;
 	export let size = { w: 64, h: 64 };
 	export let tileProps = {};
+	export let overflowing = true;
 </script>
 
-<svg width={size.w} height={size.h} viewBox="0 0 18 18" style="overflow: visible;" xmlns="http://www.w3.org/2000/svg" {...$$restProps}>
+<svg
+	width={size.w}
+	height={size.h}
+	viewBox="0 0 18 18"
+	style="{overflowing && 'overflow: visible;'} "
+	xmlns="http://www.w3.org/2000/svg"
+	{...$$restProps}
+>
 	<g opacity="0.5">
 		<path
 			d="M0 0.5H17H0ZM0 1.5H1H0ZM0 2.5H1H0ZM0 3.5H1H0ZM0 4.5H1H0ZM0 5.5H1H0ZM0 6.5H1H0ZM0 7.5H1H0ZM0 8.5H1H0ZM0 9.5H1H0ZM0 10.5H1H0ZM0 11.5H1H0ZM0 12.5H1H0ZM0 13.5H1H0ZM0 14.5H1H0ZM0 15.5H1H0ZM0 16.5H1H0Z"

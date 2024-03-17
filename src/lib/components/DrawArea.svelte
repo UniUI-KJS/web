@@ -10,6 +10,8 @@
 	}
 </script>
 
+<svelte:body on:mouseup={() => (mouseMoveMode = false)} />
+
 <div class="relative w-fit overflow-hidden rounded-container-token">
 	<div class="center-point" />
 
@@ -20,7 +22,6 @@
 					style="width: {renderSize}px; height: {renderSize}px; background-color: {!pixel ? 'black' : 'white'};"
 					class="border-primary-500 hover:border-2"
 					on:mousedown={() => (handleClick(rowIndex, colIndex), (mouseMoveMode = !pixel ? 'b' : 'w'))}
-					on:mouseup={() => (mouseMoveMode = false)}
 					on:mouseenter={() => mouseMoveMode && pixel == (mouseMoveMode == 'w') && handleClick(rowIndex, colIndex)}
 				/>
 			{/each}

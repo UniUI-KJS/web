@@ -16,7 +16,7 @@
 <Drawer
 	rounded="rounded-xl"
 	padding="p-2"
-	width={tileToAdd['_'] != undefined ? 'w-[1024px]' : 'w-fit'}
+	width={tileToAdd['_'] != undefined ? 'w-[50vw]' : 'w-fit'}
 	bgDrawer="border bg-surface-900"
 	duration={200}
 	opacityTransition={false}
@@ -36,7 +36,7 @@
 						on:click={() => ((tileToAdd['_'] = i), (tileToAdd.options = _.cloneDeep(Object.values(tiles)[i]?.initialOpts || {})))}
 					>
 						<!-- TODO: fsr this likes to take the last edited tile's options -->
-						<TilePreview tile={tile.comp} tileProps={Object.values(tiles)[i]?.initialOpts || {}} />
+						<TilePreview tile={tile.comp} tileProps={Object.values(tiles)[i]?.initialOpts || {}} overflowing={false} />
 					</button>
 				{/each}
 				<p class="text-center text-xs">More soon</p>
@@ -76,20 +76,33 @@
 
 										{#if val.meta}
 											<ArrowLeftIcon />
-											<select
-												class="select w-48 text-surface-300"
-												on:change={(e) => {
-													// @ts-expect-error
-													tileToAdd.options[opt] = tdrawFrom(e.target?.value);
-													// @ts-expect-error
-													e.target.value = '';
-												}}
-											>
-												<option value="">Use a template</option>
-												{#each Object.entries(val.meta) as [name, template]}
-													<option value={template}>{name}</option>
-												{/each}
-											</select>
+
+											<div class="flex flex-col gap-2">
+												<select
+													class="select w-48 text-surface-300"
+													on:change={(e) => {
+														// @ts-expect-error
+														tileToAdd.options[opt] = tdrawFrom(e.target?.value);
+														// @ts-expect-error
+														e.target.value = '';
+													}}
+												>
+													<option value="">Use a template</option>
+													{#each Object.entries(val.meta) as [name, template]}
+														<option value={template}>{name}</option>
+													{/each}
+												</select>
+
+												<button
+													on:click={() =>
+														(tileToAdd.options[opt] = Array(tileToAdd.options[opt].length)
+															.fill(false)
+															.map(() => Array(tileToAdd.options[opt][0].length).fill(false)))}
+													class="variant-soft-warning btn btn-sm mr-auto w-fit"
+												>
+													Clear
+												</button>
+											</div>
 										{/if}
 									{:else if val.type == 'color'}
 										<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">

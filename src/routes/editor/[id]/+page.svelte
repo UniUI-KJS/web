@@ -29,7 +29,7 @@
 
 	const drawerStore = getDrawerStore();
 	const modalStore = getModalStore();
-	$: positionClasses = $drawerStore.open || $modalStore.length > 0 ? 'scale-95' : '';
+	$: positionClasses = $drawerStore.open || $modalStore.length > 0 ? 'scale-90' : '';
 
 	let editorElement: HTMLDivElement;
 	let editorSize: ReturnType<typeof elementSizeStore> = readable({ width: 0, height: 0 });
@@ -624,9 +624,12 @@
 								disabled={localOpts.currentComponent == 'Default'}
 								class="variant-soft-error btn"
 								on:click={() => {
-									delete $pr[pi].components[localOpts.currentComponent];
 									localOpts.currentComponent = 'Default';
+
+									delete $pr[pi].components[localOpts.currentComponent];
 									$pr[pi].components = $pr[pi].components;
+									delete $pr[pi].images[localOpts.currentComponent];
+									$pr[pi].images = $pr[pi].images;
 								}}
 								id="close"
 							>

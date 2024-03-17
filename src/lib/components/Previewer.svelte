@@ -10,6 +10,8 @@
 
 	export let pics: Record<string, string>;
 	export let components: string[];
+	export let title: string;
+	export let rows: number;
 </script>
 
 <div {...$$restProps}>
@@ -20,7 +22,11 @@
 					<img src={pics[c]} alt={c} class="h-full w-full" style="image-rendering: pixelated;" />
 				</foreignObject>
 			{/each}
-			<!-- <rect x="0.5" y="0.5" width="175" height="221" stroke="#00000022" fill="none" /> -->
+
+			<text x={8} y={13} fill="#3F3F3F" font-size="10" class="font-[Minecraft]"> {title} </text>
+			{#if rows > 0}
+				<text x={8} y={rows * 18 + 27} fill="#3F3F3F" font-size="10" class="font-[Minecraft]"> Inventory </text>
+			{/if}
 		</svg>
 	</div>
 

@@ -20,7 +20,7 @@
 </svelte:head>
 
 <div class="relative h-full">
-	<Previewer bind:components pics={$pr[pi].images} class="h-full" />
+	<Previewer bind:components pics={$pr[pi].images} class="h-full" rows={-1} title="" />
 
 	<h1 class="h1 fixed left-8 top-8">{$pr[pi].name}</h1>
 	<a href="{base}/editor/{$pr[pi].id}" class="variant-filled-primary btn absolute bottom-8 right-8">Back</a>

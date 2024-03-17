@@ -1,3 +1,5 @@
+import { tdrawFrom } from '$lib';
+
 export default {
 	Button: {
 		options: {
@@ -59,6 +61,28 @@ export default {
 			Icon: Array(16)
 				.fill(null)
 				.map(() => Array(16).fill(false))
+		}
+	},
+
+	Progress: {
+		options: {
+			Icon: {
+				description: 'The icon that the progress bar should use (16x16)',
+				type: 'draw',
+				meta: {
+					ArrowE:
+						'16x16;0000000000000000000000001000000000000000110000000000000011100000000000001111000000000000111110000000000011111100111111111111111011111111111111111111111111111110000000001111110000000000111110000000000011110000000000001110000000000000110000000000000010000000'
+				}
+			},
+			Progress: { description: 'The percentage that the progress bar is set to', type: 'number', meta: [0, 100] },
+			Direction: { description: 'The direction of the progress bar', type: 'select', meta: ['Up', 'Right', 'Down', 'Left'] }
+		},
+		initialOpts: {
+			Icon: tdrawFrom(
+				'16x16;0000000000000000000000001000000000000000110000000000000011100000000000001111000000000000111110000000000011111100111111111111111011111111111111111111111111111110000000001111110000000000111110000000000011110000000000001110000000000000110000000000000010000000'
+			),
+			Progress: 50,
+			Direction: 'Right'
 		}
 	}
 };

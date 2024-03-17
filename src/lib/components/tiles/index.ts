@@ -1,5 +1,6 @@
 import TBlank from './TBlank.svelte';
 import TButton from './TButton.svelte';
+import TProgress from './TProgress.svelte';
 import TSlot from './TSlot.svelte';
 import options from './options';
 
@@ -14,6 +15,11 @@ export default {
 		comp: TSlot,
 		options: options.Slot.options,
 		initialOpts: options.Slot.initialOpts
+	},
+	Progress: {
+		comp: TProgress,
+		options: options.Progress.options,
+		initialOpts: options.Progress.initialOpts
 	}
 } as Record<
 	string,
