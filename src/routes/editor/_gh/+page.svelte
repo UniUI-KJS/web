@@ -16,7 +16,7 @@
 
 <div class="absolute bottom-1 left-1 right-1 flex" in:fade|global={{ duration: 1, delay: 2000 }}>
 	<a
-		href="http://localhost:5173/{base}/editor/_gh?token={Cookies.get('uniui-token')}"
+		href="http://localhost:5173{base}/editor/_gh?token={Cookies.get('uniui-token')}"
 		class="variant-ghost-surface btn btn-sm mx-auto w-fit"
 	>
 		Use development server
