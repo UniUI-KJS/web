@@ -13,6 +13,15 @@ export const load = async ({ url: { searchParams }, fetch, cookies }) => {
 		throw redirect(302, `${baseUrl}?${params.toString()}`);
 	}
 
+	const token = searchParams.get('token');
+	if (!!token)
+		return cookies.set('uniui-token', token, {
+			path: '/',
+			sameSite: 'strict',
+			expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+			httpOnly: false
+		});
+
 	const res = await fetch('https://github.com/login/oauth/access_token', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
