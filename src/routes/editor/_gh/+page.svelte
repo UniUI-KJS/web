@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 	import Cookies from 'js-cookie';
+	import { fade } from 'svelte/transition';
 
 	onMount(() => {
 		window.opener.location?.reload();
@@ -13,10 +14,11 @@
 	<h1 class="h1">Signed in!</h1>
 </div>
 
-<div class="absolute bottom-1 left-0 right-0 flex">
+<div class="absolute bottom-1 left-1 right-1 flex">
 	<a
 		href="http://localhost:5173/{base}/editor/_gh?token={Cookies.get('uniui-token')}"
-		class="variant-soft-surface btn btn-sm mx-auto w-fit"
+		class="btn btn-sm"
+		in:fade={{ duration: 1, delay: 2000 }}
 	>
 		Use development server
 	</a>
