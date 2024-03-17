@@ -441,15 +441,7 @@
 								return toast.warning('To publish an interface, you must be signed in!', {
 									action: {
 										label: 'Sign in',
-										onClick: () => {
-											const baseUrl = 'https://github.com/login/oauth/authorize';
-											const params = new URLSearchParams({
-												scope: 'gist',
-												client_id: GH_CLIENT_ID,
-												redirect_uri: window.location.origin + base + '/editor/_gh/?task=export&ref=' + $page.params.id
-											});
-											window.location.href = `${baseUrl}?${params.toString()}`;
-										}
+										onClick: () => open(base + '/editor/_gh', '_blank', 'popup=1,width=300,height=500')
 									}
 								});
 
@@ -484,29 +476,8 @@
 										const { id } = await r.json();
 
 										toast.success('Interface published', {
-											description: 'Share this link to your friends!',
-											duration: 30 * 1000,
-											action: {
-												label: 'Undo',
-												onClick: () => {
-													fetch('https://api.github.com/gists/' + id, {
-														method: 'DELETE',
-														headers: {
-															Authorization: 'Bearer ' + Cookies.get('uniui-token')
-														}
-													}).then((r) => {
-														if (r.ok)
-															toast.warning('Interface unpublished', {
-																description: 'Invalidated share link.'
-															});
-														else
-															toast.error('Failed to unpublish interface.', {
-																description: 'Please check gists.github.com and manually unpublish.'
-															});
-													});
-													goto(base + '/editor');
-												}
-											}
+											description: 'Share this link with your friends!',
+											duration: 30 * 1000
 										});
 
 										goto(base + '/editor/_gh/' + id);

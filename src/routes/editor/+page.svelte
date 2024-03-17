@@ -3,8 +3,8 @@
 	import { base } from '$app/paths';
 	import { interfacesStore } from '$lib';
 	import { toast } from 'svelte-sonner';
-	import { blur, fly } from 'svelte/transition';
-	import Project from './Project.svelte';
+	import { blur, fly, slide } from 'svelte/transition';
+	import Cookies from 'js-cookie';
 
 	const newProj = async (e: SubmitEvent, projectId: string) => {
 		const target = e.target as HTMLFormElement;
@@ -34,6 +34,8 @@
 
 		setTimeout(() => goto(`${base}/editor/${projectId}/`), 100);
 	};
+
+	let remoteInterfaces = fetch(base + '/editor/_gh/mine');
 </script>
 
 <svelte:head>
@@ -85,28 +87,110 @@
 
 		<!-- / -->
 
-		<div class="flex h-fit flex-col gap-2">
-			{#each $interfacesStore as project, i}
-				<Project {project} {i} />
-			{/each}
+		{#if $interfacesStore.length > 0}
+			<div class="flex h-fit flex-col gap-2">
+				{#each $interfacesStore as project, i}
+					<div class="card flex items-center px-3" in:fly|global={{ delay: 700 + i * 50, y: 10 }}>
+						<a href="{base}/editor/{project.id}/" class="grow py-3">
+							{project.name}
+						</a>
 
-			{#if $interfacesStore.length > 5}
-				<button
-					in:blur|global={{ delay: 3000 }}
-					class="anchor mb-2 !text-surface-400"
-					on:click={() =>
-						toast.warning(`Delete ALL interfaces?`, {
-							duration: 5 * 1000,
-							description: 'This CANNOT be undone! ALL YOUR WORK WILL BE LOST!',
-							action: {
-								label: 'Delete ALL!',
-								onClick: () => ($interfacesStore.length = 0)
-							}
-						})}
-				>
-					Delete all
-				</button>
-			{/if}
-		</div>
+						<div
+							class="my-1 flex gap-2 border-l border-[rgba(255,255,255,0.2)] pl-3 *:my-2"
+							in:slide|global={{ axis: 'x', delay: 1000 + i * 20 }}
+						>
+							{#if project.origin}
+								<a class="variant-soft-surface btn btn-sm mx-auto" href="{base}/editor/_gh/{project.origin}"> Origin </a>
+							{/if}
+
+							<button
+								class="variant-soft-error btn btn-sm mx-auto"
+								on:click={() =>
+									toast.warning(`Delete interface '${project.name}'?`, {
+										duration: 5 * 1000,
+										description: 'This cannot be undone!',
+										action: {
+											label: 'Delete',
+											onClick: () => ($interfacesStore = $interfacesStore.filter((p) => p.id != project.id))
+										}
+									})}
+							>
+								Delete
+							</button>
+						</div>
+					</div>
+				{/each}
+
+				{#await remoteInterfaces then remote}
+					{#if remote.ok}
+						{#await remote.json() then me}
+							<hr class="my-1" in:fly|global={{ delay: 1000, y: 10 }} />
+
+							{#each me.interfaces as project, i}
+								<div class="card flex items-center px-3" in:fly|global={{ delay: 1000 + i * 50, y: 10 }}>
+									<a href="{base}/editor/_gh/{project.id}/" class="grow py-3">
+										{project.name}
+									</a>
+
+									<div
+										class="my-1 flex gap-2 border-l border-[rgba(255,255,255,0.2)] pl-3 *:my-2"
+										in:slide|global={{ axis: 'x', delay: 1000 + i * 20 }}
+									>
+										<button
+											class="variant-soft-error btn btn-sm mx-auto"
+											on:click={() =>
+												toast.warning(`Unpublish interface '${project.name}'?`, {
+													duration: 5 * 1000,
+													description: 'This cannot be undone!',
+													action: {
+														label: 'mhm!',
+														onClick: () =>
+															fetch('https://api.github.com/gists/' + project.id, {
+																method: 'DELETE',
+																headers: {
+																	Authorization: 'Bearer ' + Cookies.get('uniui-token')
+																}
+															}).then((r) => {
+																remoteInterfaces = fetch(base + '/editor/_gh/mine');
+																if (r.ok)
+																	toast.warning('Interface unpublished', {
+																		description: 'Invalidated share link.'
+																	});
+																else
+																	toast.error('Failed to unpublish interface.', {
+																		description: 'Please check gists.github.com and manually unpublish.'
+																	});
+															})
+													}
+												})}
+										>
+											Unpublish
+										</button>
+									</div>
+								</div>
+							{:else}
+								<p class="text-surface-300">(no interfaces published)</p>
+							{/each}
+
+							<button
+								in:fly|global={{ delay: 1300, y: 10 }}
+								class="variant-soft-surface btn btn-sm mx-auto w-fit"
+								on:click={() => (Cookies.remove('uniui-token'), window.location.reload())}
+							>
+								Not {me.user.name}?
+							</button>
+						{/await}
+					{:else}
+						<button
+							class="variant-soft-surface btn btn-sm mx-auto mt-1 w-fit"
+							on:click={() => open(base + '/editor/_gh', '_blank', 'popup=1,width=300,height=500')}
+							in:fly|global={{ delay: 1000, y: 10 }}
+						>
+							View my published interfaces
+						</button>
+					{/if}
+				{/await}
+			</div>
+		{/if}
 	</div>
 </div>

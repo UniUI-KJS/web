@@ -31,7 +31,8 @@
 						...$interfacesStore,
 						{
 							...ui,
-							id
+							id,
+							origin: $page.params.id
 						}
 					];
 
@@ -43,14 +44,20 @@
 		</div>
 	</div>
 
-	<p in:fly|global={{ y: 20, delay: 200 }}>User-submitted UniUI interface. All credits go to the original author.</p>
+	<p in:fly|global={{ y: 20, delay: 200 }}>
+		UniUI interface by
+		<a href={$page.data.owner.url}>
+			<img src={$page.data.owner.avatar} alt="avatar" class="inline size-8 rounded-full" />
+			<span class="anchor">{$page.data.owner.name}</span>
+		</a>
+	</p>
 
 	<div class="relative mt-4 h-full w-full rounded-lg border md:h-[80vh]" in:fly|global={{ y: 20, delay: 400 }}>
 		<Previewer pics={ui.images} components={Object.keys(ui.components)} class="h-full pb-16" />
 	</div>
 
 	<div class="flex justify-center">
-		<a href="{base}/" class="btn w-fit rounded-full hover:variant-soft">
+		<a href="{base}/editor" class="btn w-fit rounded-full hover:variant-soft">
 			<h1 class="h3">UniUI</h1>
 		</a>
 	</div>

@@ -2,7 +2,7 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { TreeView } from '@skeletonlabs/skeleton';
-	import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-svelte';
+	import { ArrowLeftIcon } from 'lucide-svelte';
 	import markdownit from 'markdown-it';
 	import { slide } from 'svelte/transition';
 	import RecursiveDocsTree from './RecursiveDocsTree.svelte';

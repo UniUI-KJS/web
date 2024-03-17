@@ -27,6 +27,7 @@ export const interfacesStore = localStorageStore<
 		modifyPlayerSlots: boolean;
 		images: Record<string, string>;
 		interactions: Record<number, string>;
+		origin?: string;
 	}[]
 >('uniuiInterfaces', []);
 
