@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
-	import { GH_CLIENT_ID, darken, interfacesStore as pr } from '$lib';
+	import { darken, interfacesStore as pr } from '$lib';
 	import TilePlaceholder from '$lib/components/TilePlaceholder.svelte';
 	import TilePreview from '$lib/components/TilePreview.svelte';
 	import { FFoot, FHead, FRow } from '$lib/components/outerFrame';
@@ -516,7 +516,7 @@
 									setTimeout(() => goto(base + '/editor/' + $page.params.id + '/exported'), 2000);
 								};
 							} catch (e) {
-								toast.error("Run 'npx uniui generate' before trying to export.");
+								toast.error("Run 'npx uniui-kjs@latest generate' before trying to export.");
 								localOpts.noExportButton = false;
 							}
 						}}

@@ -3,7 +3,7 @@
 	import { base } from '$app/paths';
 	import { interfacesStore } from '$lib';
 	import { toast } from 'svelte-sonner';
-	import { blur, fly, slide } from 'svelte/transition';
+	import { fly, slide } from 'svelte/transition';
 	import Cookies from 'js-cookie';
 
 	const newProj = async (e: SubmitEvent, projectId: string) => {

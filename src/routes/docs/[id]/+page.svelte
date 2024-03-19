@@ -36,10 +36,16 @@
 		</TreeView>
 	</div>
 
-	<div class="p-4 lg:p-16">
+	<div class="relative p-4 lg:p-16">
 		{#key doc}
 			<div class="rabbity-animation prose prose-cyan max-w-full select-text dark:prose-invert [&_*]:select-text">
 				{@html doc}
+			</div>
+
+			<div class="mt-6 flex justify-end">
+				<a href="https://github.com/Team-UniUI/docs/blob/main/{$page.params.id}.md" class="variant-soft-primary btn btn-sm" target="_blank">
+					View source
+				</a>
 			</div>
 		{/key}
 	</div>
