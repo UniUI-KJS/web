@@ -9,23 +9,26 @@
 
 <div class="container mx-auto flex h-full items-center justify-center">
 	<div class="flex flex-col items-center space-y-10 text-center">
-		<h1 class="h1" in:fly|global={{ delay: 400, y: 20 }}>Say hello to UniUI.</h1>
+		<h1 class="h1" in:fly|global={{ delay: 400, y: 20 }}>UNIUI HAS BEEN ARCHIVED</h1>
 
 		<figure in:fly|global={{ delay: 200, y: 20 }}>
 			<section class="img-bg" />
 			<img src="{base}/uniui.png" alt="logo" />
 		</figure>
 
-		<p in:fly|global={{ delay: 600, y: 20 }}>Opinionated UI library for KubeJS</p>
+		<p in:fly|global={{ delay: 600, y: 20 }}>
+			given recent things with the latcord uniui has been archived, source is now available tho.
+			not sure how long this will survive.
+		</p>
 
 		<!-- / -->
 
 		<div class="flex flex-wrap justify-center gap-2">
-			<a class="variant-filled-primary btn" href="{base}/docs/getting-started" in:blur|global={{ delay: 800 }}> Getting Started </a>
+			<a class="variant-filled-primary btn" href="{base}/docs/getting-started" in:blur|global={{ delay: 800 }}> Getting Started (dont) </a>
 			<a class="variant-soft-primary btn" href="{base}/editor/" in:blur|global={{ delay: 900 }}>
 				Launch Editor <span class="inline lg:hidden">&nbsp;(use bigger screen!)</span>
 			</a>
-			<a class="variant-soft-primary btn" href="https://discord.gg/TZXUQVzPJ6" in:blur|global={{ delay: 1000 }}> Discord </a>
+			<a class="variant-soft-primary btn" href="https://github.com/UniUI-KJS/web" in:blur|global={{ delay: 1000 }}> Source </a>
 		</div>
 	</div>
 </div>
